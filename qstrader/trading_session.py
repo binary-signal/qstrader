@@ -52,9 +52,8 @@ class TradingSession(object):
         self._config_session()
         self.cur_time = None
 
-        if self.session_type == "live":
-            if self.end_session_time is None:
-                raise Exception("Must specify an end_session_time when live trading")
+        if self.session_type == "live" and self.end_session_time is None:
+            raise Exception("Must specify an end_session_time when live trading")
 
     def _config_session(self):
         """
@@ -125,10 +124,7 @@ class TradingSession(object):
                 self.price_handler.stream_next()
             else:
                 if event is not None:
-                    if (
-                        event.type == EventType.TICK or
-                        event.type == EventType.BAR
-                    ):
+                    if event.type in [EventType.TICK, EventType.BAR]:
                         self.cur_time = event.time
                         # Generate any sentiment events here
                         if self.sentiment_handler is not None:

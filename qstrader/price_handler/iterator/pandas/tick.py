@@ -29,8 +29,7 @@ class PandasDataFrameTickEventIterator(AbstractTickEventIterator):
 
     def __next__(self):
         index, row = next(self._itr_bar)
-        price_event = self._create_event(index, self.ticker, row)
-        return price_event
+        return self._create_event(index, self.ticker, row)
 
 
 class PandasPanelTickEventIterator(AbstractTickEventIterator):
@@ -62,8 +61,7 @@ class PandasPanelTickEventIterator(AbstractTickEventIterator):
         except StopIteration:
             self._next_ticker_bar()
             ticker, row = next(self._itr_bar)
-        bev = self._create_event(self.index, ticker, row)
-        return bev
+        return self._create_event(self.index, ticker, row)
 
 
 def PandasTickEventIterator(data, ticker=None):

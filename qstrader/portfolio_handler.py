@@ -44,12 +44,11 @@ class PortfolioHandler(object):
             quantity = 0
         else:
             quantity = signal_event.suggested_quantity
-        order = SuggestedOrder(
-            signal_event.ticker,
-            signal_event.action,
-            quantity=quantity
-        )
-        return order
+        return SuggestedOrder(
+                signal_event.ticker,
+                signal_event.action,
+                quantity=quantity
+            )
 
     def _place_orders_onto_queue(self, order_list):
         """

@@ -36,39 +36,38 @@ class MovingAverageCrossStrategy(AbstractStrategy):
         self.lw_bars = deque(maxlen=self.long_window)
 
     def calculate_signals(self, event):
-        if (
-            event.type == EventType.BAR and
-            event.ticker == self.ticker
-        ):
-            # Add latest adjusted closing price to the
-            # short and long window bars
-            self.lw_bars.append(event.adj_close_price)
-            if self.bars > self.long_window - self.short_window:
-                self.sw_bars.append(event.adj_close_price)
+        if event.type != EventType.BAR or event.ticker != self.ticker:
+            return
 
-            # Enough bars are present for trading
-            if self.bars > self.long_window:
-                # Calculate the simple moving averages
-                short_sma = np.mean(self.sw_bars)
-                long_sma = np.mean(self.lw_bars)
-                # Trading signals based on moving average cross
-                if short_sma > long_sma and not self.invested:
-                    print("LONG %s: %s" % (self.ticker, event.time))
-                    signal = SignalEvent(
-                        self.ticker, "BOT",
-                        suggested_quantity=self.base_quantity
-                    )
-                    self.events_queue.put(signal)
-                    self.invested = True
-                elif short_sma < long_sma and self.invested:
-                    print("SHORT %s: %s" % (self.ticker, event.time))
-                    signal = SignalEvent(
-                        self.ticker, "SLD",
-                        suggested_quantity=self.base_quantity
-                    )
-                    self.events_queue.put(signal)
-                    self.invested = False
-            self.bars += 1
+        # Add latest adjusted closing price to the
+        # short and long window bars
+        self.lw_bars.append(event.adj_close_price)
+        if self.bars > self.long_window - self.short_window:
+            self.sw_bars.append(event.adj_close_price)
+
+        # Enough bars are present for trading
+        if self.bars > self.long_window:
+            # Calculate the simple moving averages
+            short_sma = np.mean(self.sw_bars)
+            long_sma = np.mean(self.lw_bars)
+            # Trading signals based on moving average cross
+            if short_sma > long_sma and not self.invested:
+                print("LONG %s: %s" % (self.ticker, event.time))
+                signal = SignalEvent(
+                    self.ticker, "BOT",
+                    suggested_quantity=self.base_quantity
+                )
+                self.events_queue.put(signal)
+                self.invested = True
+            elif short_sma < long_sma and self.invested:
+                print("SHORT %s: %s" % (self.ticker, event.time))
+                signal = SignalEvent(
+                    self.ticker, "SLD",
+                    suggested_quantity=self.base_quantity
+                )
+                self.events_queue.put(signal)
+                self.invested = False
+        self.bars += 1
 
 
 def run(config, testing, tickers, filename):
@@ -93,8 +92,7 @@ def run(config, testing, tickers, filename):
         events_queue, title=title,
         benchmark=tickers[1],
     )
-    results = backtest.start_trading(testing=testing)
-    return results
+    return backtest.start_trading(testing=testing)
 
 
 if __name__ == "__main__":

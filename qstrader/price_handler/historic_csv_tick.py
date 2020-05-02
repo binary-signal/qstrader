@@ -90,8 +90,7 @@ class HistoricCSVTickPriceHandler(AbstractTickPriceHandler):
         """
         bid = PriceParser.parse(row["Bid"])
         ask = PriceParser.parse(row["Ask"])
-        tev = TickEvent(ticker, index, bid, ask)
-        return tev
+        return TickEvent(ticker, index, bid, ask)
 
     def stream_next(self):
         """

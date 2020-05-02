@@ -55,8 +55,7 @@ def run(config, testing, tickers, filename):
         initial_equity, start_date, end_date,
         events_queue, title=title
     )
-    results = backtest.start_trading(testing=testing)
-    return results
+    return backtest.start_trading(testing=testing)
 
 
 if __name__ == "__main__":

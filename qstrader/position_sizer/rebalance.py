@@ -32,12 +32,8 @@ class LiquidateRebalancePositionSizer(AbstractPositionSizer):
         if initial_order.action == "EXIT":
             # Obtain current quantity and liquidate
             cur_quantity = portfolio.positions[ticker].quantity
-            if cur_quantity > 0:
-                initial_order.action = "SLD"
-                initial_order.quantity = cur_quantity
-            else:
-                initial_order.action = "BOT"
-                initial_order.quantity = cur_quantity
+            initial_order.action = 'SLD' if cur_quantity > 0 else 'BOT'
+            initial_order.quantity = cur_quantity
         else:
             weight = self.ticker_weights[ticker]
             # Determine total portfolio value, work out dollar weight

@@ -69,8 +69,7 @@ class SimpleStatistics(AbstractStatistics):
         timeseries = self.timeseries
         timeseries[0] = pd.to_datetime(timeseries[1]) - pd.Timedelta(days=1)
 
-        statistics = {}
-        statistics["sharpe"] = self.calculate_sharpe()
+        statistics = {'sharpe': self.calculate_sharpe()}
         statistics["drawdowns"] = pd.Series(self.drawdowns, index=timeseries)
         statistics["max_drawdown"] = max(self.drawdowns)
         statistics["max_drawdown_pct"] = self.calculate_max_drawdown_pct()

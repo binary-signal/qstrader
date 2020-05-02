@@ -45,7 +45,6 @@ class AbstractTickEventIterator(AbstractPriceEventIterator):
         try:
             bid = PriceParser.parse(row["Bid"])
             ask = PriceParser.parse(row["Ask"])
-            tev = TickEvent(ticker, index, bid, ask)
-            return tev
+            return TickEvent(ticker, index, bid, ask)
         except ValueError:
             raise EmptyTickEvent("row %s %s %s can't be convert to TickEvent" % (index, ticker, row))

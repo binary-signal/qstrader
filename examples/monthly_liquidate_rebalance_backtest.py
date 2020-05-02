@@ -38,8 +38,7 @@ class MonthlyLiquidateRebalanceStrategy(AbstractStrategy):
         been "invested" yet. This is necessary to avoid sending
         a liquidation signal on the first allocation.
         """
-        tickers_invested = {ticker: False for ticker in self.tickers}
-        return tickers_invested
+        return {ticker: False for ticker in self.tickers}
 
     def calculate_signals(self, event):
         """
@@ -93,8 +92,7 @@ def run(config, testing, tickers, filename):
         events_queue, position_sizer=position_sizer,
         title=title, benchmark=tickers[0],
     )
-    results = backtest.start_trading(testing=testing)
-    return results
+    return backtest.start_trading(testing=testing)
 
 
 if __name__ == "__main__":

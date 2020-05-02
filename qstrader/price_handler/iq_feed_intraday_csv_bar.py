@@ -76,7 +76,7 @@ class IQFeedIntradayCsvBarPriceHandler(AbstractBarPriceHandler):
             return df.iterrows()
         elif start is not None and end is None:
             return df.ix[start:].iterrows()
-        elif start is None and end is not None:
+        elif start is None:
             return df.ix[:end].iterrows()
         else:
             return df.ix[start:end].iterrows()
@@ -121,12 +121,11 @@ class IQFeedIntradayCsvBarPriceHandler(AbstractBarPriceHandler):
         close_price = PriceParser.parse(row["Close"])
         adj_close_price = PriceParser.parse(row["Close"])
         volume = int(row["Volume"])
-        bev = BarEvent(
-            ticker, index, period, open_price,
-            high_price, low_price, close_price,
-            volume, adj_close_price
-        )
-        return bev
+        return BarEvent(
+                ticker, index, period, open_price,
+                high_price, low_price, close_price,
+                volume, adj_close_price
+            )
 
     def stream_next(self):
         """

@@ -92,10 +92,7 @@ def create_drawdowns(returns):
     perf["Drawdown"] = (hwm - returns) / hwm
     perf["Drawdown"].ix[0] = 0.0
     perf["DurationCheck"] = np.where(perf["Drawdown"] == 0, 0, 1)
-    duration = max(
-        sum(1 for i in g if i == 1)
-        for k, g in groupby(perf["DurationCheck"])
-    )
+    duration = max(g.count(1) for k, g in groupby(perf["DurationCheck"]))
     return perf["Drawdown"], np.max(perf["Drawdown"]), duration
 
 

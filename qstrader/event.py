@@ -127,16 +127,15 @@ class BarEvent(Event):
             return "%ssec" % str(self.period)
 
     def __str__(self):
-        format_str = "Type: %s, Ticker: %s, Time: %s, Period: %s, " \
-            "Open: %s, High: %s, Low: %s, Close: %s, " \
-            "Adj Close: %s, Volume: %s" % (
-                str(self.type), str(self.ticker), str(self.time),
-                str(self.period_readable), str(self.open_price),
-                str(self.high_price), str(self.low_price),
-                str(self.close_price), str(self.adj_close_price),
-                str(self.volume)
-            )
-        return format_str
+        return "Type: %s, Ticker: %s, Time: %s, Period: %s, " \
+                "Open: %s, High: %s, Low: %s, Close: %s, " \
+                "Adj Close: %s, Volume: %s" % (
+                    str(self.type), str(self.ticker), str(self.time),
+                    str(self.period_readable), str(self.open_price),
+                    str(self.high_price), str(self.low_price),
+                    str(self.close_price), str(self.adj_close_price),
+                    str(self.volume)
+                )
 
     def __repr__(self):
         return str(self)

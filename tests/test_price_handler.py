@@ -86,7 +86,7 @@ class TestPriceHandlerSimpleCase(unittest.TestCase):
         )
 
         # Stream to Tick #10 (GOOG)
-        for i in range(4, 11):
+        for _ in range(4, 11):
             self.price_handler.stream_next()
         self.assertEqual(
             self.price_handler.tickers["GOOG"]["timestamp"].strftime(
@@ -104,7 +104,7 @@ class TestPriceHandlerSimpleCase(unittest.TestCase):
         )
 
         # Stream to Tick #20 (GOOG)
-        for i in range(11, 21):
+        for _ in range(11, 21):
             self.price_handler.stream_next()
         self.assertEqual(
             self.price_handler.tickers["MSFT"]["timestamp"].strftime(
@@ -122,7 +122,7 @@ class TestPriceHandlerSimpleCase(unittest.TestCase):
         )
 
         # Stream to Tick #30 (final tick, AMZN)
-        for i in range(21, 31):
+        for _ in range(21, 31):
             self.price_handler.stream_next()
         self.assertEqual(
             self.price_handler.tickers["AMZN"]["timestamp"].strftime(

@@ -34,8 +34,7 @@ class PandasDataFrameBarEventIterator(AbstractBarEventIterator):
 
     def __next__(self):
         index, row = next(self._itr_bar)
-        price_event = self._create_event(index, self.period, self.ticker, row)
-        return price_event
+        return self._create_event(index, self.period, self.ticker, row)
 
 
 class PandasPanelBarEventIterator(AbstractBarEventIterator):
@@ -68,8 +67,7 @@ class PandasPanelBarEventIterator(AbstractBarEventIterator):
         except StopIteration:
             self._next_ticker_bar()
             ticker, row = next(self._itr_bar)
-        price_event = self._create_event(self.index, self.period, ticker, row)
-        return price_event
+        return self._create_event(self.index, self.period, ticker, row)
 
 
 def PandasBarEventIterator(data, period, ticker=None):

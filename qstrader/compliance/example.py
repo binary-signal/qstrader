@@ -32,15 +32,15 @@ class ExampleCompliance(AbstractCompliance):
         except (IOError, OSError):
             print("No tradelog files to clean.")
 
-        # Write new file header
-        fieldnames = [
-            "timestamp", "ticker",
-            "action", "quantity",
-            "exchange", "price",
-            "commission"
-        ]
         fname = os.path.expanduser(os.path.join(self.config.OUTPUT_DIR, self.csv_filename))
         with open(fname, 'a') as csvfile:
+            # Write new file header
+            fieldnames = [
+                "timestamp", "ticker",
+                "action", "quantity",
+                "exchange", "price",
+                "commission"
+            ]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
 

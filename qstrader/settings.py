@@ -12,10 +12,7 @@ DEFAULT_CONFIG_FILENAME = '~/qstrader.yml'
 def from_env(key, default_value=None, root=ENV_VAR_ROOT):
     """Returns a value (url, login, password)
     using either default_value or using environment variable"""
-    if root != "":
-        ENV_VAR_KEY = root + "_" + key.upper()
-    else:
-        ENV_VAR_KEY = key.upper()
+    ENV_VAR_KEY = root + '_' + key.upper() if root != '' else key.upper()
     if default_value == '' or default_value is None:
         try:
             return(os.environ[ENV_VAR_KEY])

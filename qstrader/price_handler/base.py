@@ -37,8 +37,7 @@ class AbstractPriceHandler(object):
         Returns the most recent actual timestamp for a given ticker
         """
         if ticker in self.tickers:
-            timestamp = self.tickers[ticker]["timestamp"]
-            return timestamp
+            return self.tickers[ticker]["timestamp"]
         else:
             print(
                 "Timestamp for ticker %s is not "
@@ -100,8 +99,7 @@ class AbstractBarPriceHandler(AbstractPriceHandler):
         Returns the most recent actual (unadjusted) closing price.
         """
         if ticker in self.tickers:
-            close_price = self.tickers[ticker]["close"]
-            return close_price
+            return self.tickers[ticker]["close"]
         else:
             print(
                 "Close price for ticker %s is not "

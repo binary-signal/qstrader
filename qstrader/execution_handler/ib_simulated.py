@@ -48,36 +48,34 @@ class IBSimulatedExecutionHandler(AbstractExecutionHandler):
         Parameters:
         event - An Event object with order information.
         """
-        if event.type == EventType.ORDER:
-            # Obtain values from the OrderEvent
-            timestamp = self.price_handler.get_last_timestamp(event.ticker)
-            ticker = event.ticker
-            action = event.action
-            quantity = event.quantity
+        if event.type != EventType.ORDER:
+            return
+        # Obtain values from the OrderEvent
+        timestamp = self.price_handler.get_last_timestamp(event.ticker)
+        ticker = event.ticker
+        action = event.action
+        quantity = event.quantity
 
-            # Obtain the fill price
-            if self.price_handler.istick():
-                bid, ask = self.price_handler.get_best_bid_ask(ticker)
-                if event.action == "BOT":
-                    fill_price = ask
-                else:
-                    fill_price = bid
-            else:
-                close_price = self.price_handler.get_last_close(ticker)
-                fill_price = close_price
+        # Obtain the fill price
+        if self.price_handler.istick():
+            bid, ask = self.price_handler.get_best_bid_ask(ticker)
+            fill_price = ask if event.action == 'BOT' else bid
+        else:
+            close_price = self.price_handler.get_last_close(ticker)
+            fill_price = close_price
 
-            # Set a dummy exchange and calculate trade commission
-            exchange = "ARCA"
-            commission = self.calculate_ib_commission(quantity, fill_price)
+        # Set a dummy exchange and calculate trade commission
+        exchange = "ARCA"
+        commission = self.calculate_ib_commission(quantity, fill_price)
 
-            # Create the FillEvent and place on the events queue
-            fill_event = FillEvent(
-                timestamp, ticker,
-                action, quantity,
-                exchange, fill_price,
-                commission
-            )
-            self.events_queue.put(fill_event)
+        # Create the FillEvent and place on the events queue
+        fill_event = FillEvent(
+            timestamp, ticker,
+            action, quantity,
+            exchange, fill_price,
+            commission
+        )
+        self.events_queue.put(fill_event)
 
-            if self.compliance is not None:
-                self.compliance.record_trade(fill_event)
+        if self.compliance is not None:
+            self.compliance.record_trade(fill_event)

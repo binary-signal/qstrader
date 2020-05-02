@@ -603,10 +603,7 @@ class TearsheetStatistics(AbstractStatistics):
         sns.set_style("whitegrid")
         sns.set_palette("deep", desat=.6)
 
-        if self.rolling_sharpe:
-            offset_index = 1
-        else:
-            offset_index = 0
+        offset_index = 1 if self.rolling_sharpe else 0
         vertical_sections = 5 + offset_index
         fig = plt.figure(figsize=(10, vertical_sections * 3.5))
         fig.suptitle(self.title, y=0.94, weight='bold')
